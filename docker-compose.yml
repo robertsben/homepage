@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  python_app:
+    build:
+      context: home_python
+    ports:
+      - 7001:80
