@@ -5,4 +5,10 @@ services:
     build:
       context: home_python
     ports:
-      - 7001:80
+      - 7001:443
+    volumes:
+      - ./home_python/src:/app/src
+      - ./certs:/app/certs
+    env_file:
+      - home_python/deploy/.env-local
+

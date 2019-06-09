@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: 25% 50% 25%;
+            margin-bottom: 2rem;
+            margin-top: 2rem;
+        }
+        @media only screen and (max-width: 85rem) {
+            .grid-container {
+                grid-template-columns: 10% 80% 10%;
+            }
+        }
+    </style>
+    <title>${title}</title>
+</head>
+<body style="font-family: 'Courier New', Courier, Monospaced; text-align: center;">
+    <h1>
+        ${heading}
+    </h1>
+    <nav>
+        <a href="${home_link_path}">${home_link_name}</a>
+        <a href="${about_link_path}">${about_link_name}</a>
+        <a href="${python_link_path}">${python_link_name}</a>
+        <a href="${repository_link_path}">${repository_link_name}</a>
+    </nav>
+    <div class="grid-container">
+        <div class="grid-item"></div>
+        <div class="grid-item">
+            <article>
+                <h3>${main_content_heading}</h3>
+                <p>${main_content_first_para}</p>
+                <p>${main_content_second_para}</p>
+            </article>
+        </div>
+        <div class="grid-item"></div>
+    </div>
+</main>
+</body>
+</html>

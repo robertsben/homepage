@@ -1,0 +1,15 @@
+{
+  "title": "broberts.dev",
+  "heading": "broberts.dev",
+  "home_link_path": "/",
+  "home_link_name": "home",
+  "about_link_path": "/about",
+  "about_link_name": "about",
+  "python_link_path": "/python",
+  "python_link_name": "python",
+  "repository_link_path": "https://github.com/robertsben/homepage",
+  "repository_link_name": "github",
+  "main_content_heading": "This website was built as a challenge, with two key ideas in mind: 'use only tools from the language standard library', and 'make it as minimal as possible'.",
+  "main_content_first_para": "The first implementation uses python. You can read more about the python implementation on the python link above. You can see the repository on github via the github link above.",
+  "main_content_second_para": "The site is also available in multiple Content-Types. You can request in HTML, plain text, or JSON format, using the Accept header."
+}

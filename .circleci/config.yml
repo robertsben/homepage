@@ -1,0 +1,56 @@
+version: 2.1
+
+jobs:
+  build-docker-wip:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Authenticate with gcloud
+          command: bash deploy/gcloud_auth.sh
+      - run:
+          name: Build and tag python docker image
+          command: |
+            export BUILD_DIRECTORY=${PYTHON_BUILD_DIRECTORY}
+            export DOCKER_IMAGE_NAME=${PYTHON_DOCKER_IMAGE_NAME}
+            export DOCKER_IMAGE_TAG=0.0.1-${CIRCLE_SHA1}
+            bash deploy/publish.sh
+
+  build-docker-tag:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Authenticate with gcloud
+          command: bash deploy/gcloud_auth.sh
+      - run:
+          name: Build and tag python docker image
+          command: |
+            export BUILD_DIRECTORY=${PYTHON_BUILD_DIRECTORY}
+            export DOCKER_IMAGE_NAME=${PYTHON_DOCKER_IMAGE_NAME}
+            export DOCKER_IMAGE_TAG=${CIRCLE_TAG}
+            bash deploy/publish.sh
+
+
+workflows:
+  version: 2
+  build-publish-docker:
+    jobs:
+      - build-docker-wip:
+          filters:
+            branches:
+              ignore: master
+            tags:
+              ignore: /.*/
+      - build-docker-tag:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+.*/

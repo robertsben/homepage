@@ -1,1 +1,5 @@
 .idea
+*.pyc
+certs
+deploy/*.json
+.env-secret

@@ -1,0 +1,21 @@
+{
+  "title": "${title}",
+  "main": {
+    "heading": "${heading}",
+    "content": {
+      "heading": "${main_content_heading}",
+      "body": {
+        "paragraphs": [
+          "${main_content_first_para}",
+          "${main_content_second_para}"
+        ]
+      }
+    }
+  },
+  "links":  {
+    "${home_link_name}": "${home_link_path}",
+    "${about_link_name}": "${about_link_path}",
+    "${python_link_name}": "${python_link_path}",
+    "${repository_link_name}": "${repository_link_path}"
+  }
+}
