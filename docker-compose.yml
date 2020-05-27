@@ -12,3 +12,7 @@ services:
     env_file:
       - home_python/deploy/.env-local
 
+  go_app:
+    build:
+      context: .
+      dockerfile: go.Dockerfile

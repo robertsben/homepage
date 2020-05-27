@@ -17,8 +17,20 @@ certs, or use `brew install curl` version of curl.
 
 ## @TODO
 
-* Create a helm chart for app with ingress service
-* Deploy app to GKE via helm in circle
-* Figure out k8s gcr secret
-* Figure out a cert for GKE
-* Figure out getting domain pointed at ingress
+### Go
+* Write a socket server
+* Parse HTTP response
+* Build router
+* Build templating engine
+
+### Python
+* Break down the templating
+** Should do partials
+** JSON response should just be the data
+** Figure out a better way of printing lists
+
+### Deployment
+* Get a k3s cluster working
+* Deploy apps to k3s
+* Write a websocket (or something) link from VPS to cluster
+* Find an ingress controller for cluster (nginx L4?)

@@ -3,3 +3,4 @@
 certs
 deploy/*.json
 .env-secret
+go_vendor
