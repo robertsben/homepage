@@ -28,6 +28,7 @@ USER $APP_USER
 
 COPY certs certs
 COPY home_go/templates templates
+COPY home_go/data data
 COPY --from=builder $APP_HOME/main .
 
 CMD ["./main"]

@@ -1,42 +1,39 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"path"
 )
 
 type Body struct {
-	Heading string
+	Heading    string
+	Paragraphs []string
 }
 
 type Link struct {
-	Path string
+	Url  string
 	Name string
 }
 
-type Paragraph struct {
-	Body string
-}
-
-type MainPage struct {
-	Title string
+type IndexPage struct {
+	Title   string
 	Heading string
-	Main Body
-	Links []Link
-	Paragraphs []Paragraph
+	Main    Body
+	Links   []Link
 }
 
 func templateHandler(w http.ResponseWriter, r *http.Request) {
-	data := MainPage{
-		Title: "test page",
-		Heading: "It's a me, a test a page",
-		Main: Body{Heading: "ummm yep"},
-		Links: []Link{{Path: "/", Name: "Home"}, {Path: "/test", Name: "self"}, {Path: "/about", Name: "About"}},
-		Paragraphs: []Paragraph{{Body: "Yeah whatever"}, {Body: "somethign something whatever"}},
+	raw, err := ioutil.ReadFile(path.Join("data", "index.json"))
+	var data IndexPage
+	err = json.Unmarshal(raw, &data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 	fp := path.Join("templates", "index.html")
 	tmpl, err := template.ParseFiles(fp)

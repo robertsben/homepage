@@ -24,7 +24,7 @@
 </h1>
 <nav>
     {{range .Links}}
-        <a href="{{.Path}}">{{.Name}}</a>
+        <a href="{{.Url}}">{{.Name}}</a>
     {{end}}
 </nav>
 <div class="grid-container">
@@ -32,8 +32,8 @@
     <div class="grid-item">
         <article>
             <h3>{{.Main.Heading}}</h3>
-            {{range .Paragraphs}}
-                <p>{{.Body}}</p>
+            {{range .Main.Paragraphs}}
+                <p>{{.}}</p>
             {{end}}
         </article>
     </div>
