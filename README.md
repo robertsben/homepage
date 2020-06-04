@@ -18,6 +18,14 @@ certs, or use `brew install curl` version of curl.
 ## @TODO
 
 ### Go
+* ~~Write a quick HTTP server~~
+* ~~Figure out HTML templating~~
+* ~~Figure out driving template data from JSON files~~
+* Add a data file reader based on route
+* Figure out how to return different content-type based on the accept header
+* Add templating for plain text
+* Add markdown templating?
+* Just let the json responses be json responses - don't template those
 * Write a socket server
 * Parse HTTP response
 * Build router
