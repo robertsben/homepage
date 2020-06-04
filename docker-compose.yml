@@ -16,3 +16,5 @@ services:
     build:
       context: .
       dockerfile: go.Dockerfile
+    ports:
+      - 7002:8000
