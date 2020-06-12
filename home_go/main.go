@@ -2,9 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -35,7 +33,7 @@ func templateHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	fp := path.Join("templates", "index.html")
+	fp := path.Join("templates", "html", "index.html")
 	tmpl, err := template.ParseFiles(fp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -47,12 +45,9 @@ func templateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, fmt.Sprintf("Hello, %s world!", r.URL.String()))
-}
 
 func main() {
 	http.HandleFunc("/test", templateHandler)
-	http.HandleFunc("/", helloHandler)
+	http.HandleFunc("/", DefaultHandler)
 	log.Fatal(http.ListenAndServe(":8000", nil))
 }
