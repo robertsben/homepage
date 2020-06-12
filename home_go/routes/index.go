@@ -1,10 +1,6 @@
 package routes
 
-import (
-	"encoding/json"
-	"homepage/templating"
-	"net/http"
-)
+import "net/http"
 
 type Body struct {
 	Heading    string   `json:"heading"`
@@ -23,27 +19,21 @@ type IndexPage struct {
 	Links   []Link `json:"links"`
 }
 
-func RenderIndex(w http.ResponseWriter, contentType string) {
-	var data IndexPage
-	rawData, err := templating.ReadTemplateData("index")
-	if err != nil {
-		RenderError(w, contentType, ErrorFactory(http.StatusInternalServerError, err.Error()))
+type ResponseConfig struct {
+	TemplateName     string
+	TemplateDataName string
+	TemplateMarshal  interface{}
+	Path             string
+}
+
+func IndexRouteResponder(r *http.Request) (ResponseConfig, *Error){
+	var responseConfig = ResponseConfig{Path: "/"}
+	if r.Method != "GET" {
+		httpError := MethodNotAllowedError(r.Method, responseConfig)
+		return responseConfig, &httpError
 	}
-	err = json.Unmarshal(rawData, &data)
-	if err != nil {
-		RenderError(w, contentType, ErrorFactory(http.StatusInternalServerError, err.Error()))
-	}
-	if contentType == "application/json" {
-		w.Header().Set("Content-Type", "application/json")
-		resp, _ := json.Marshal(data)
-		w.Write(resp)
-		return
-	}
-	tmpl, err := templating.ReadTemplate("index", contentType)
-	if err != nil {
-		RenderError(w, contentType, ErrorFactory(http.StatusInternalServerError, err.Error()))
-	}
-	if err := tmpl.Execute(w, data); err != nil {
-		RenderError(w, contentType, ErrorFactory(http.StatusInternalServerError, err.Error()))
-	}
+	responseConfig.TemplateName = "index"
+	responseConfig.TemplateDataName = "index"
+	responseConfig.TemplateMarshal = &IndexPage{}
+	return responseConfig, nil
 }

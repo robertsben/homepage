@@ -1,0 +1,17 @@
+{
+  "title": "broberts.about",
+  "heading": "broberts.about",
+  "links": [
+    {"name": "home", "url":  "/"},
+    {"name": "about", "url":  "/about"},
+    {"name": "python", "url":  "/python"},
+    {"name": "go", "url":  "/go"},
+    {"name": "github", "url":  "https://github.com/robertsben/homepage"}
+  ],
+  "main": {
+    "heading": "Hello, I'm Ben Roberts. I'm a Senior Developer currently working for Sky, maintaining and improving the Sports and News data platform.",
+    "paragraphs": [
+      "At present I work predominantly as a backend developer, in Python and PHP, but generally I'm most interested in devising succinct, scalable solutions to challenging problems where there is opportunity to learn."
+    ]
+  }
+}

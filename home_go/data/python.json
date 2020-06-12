@@ -1,0 +1,18 @@
+{
+  "title": "broberts.python",
+  "heading": "broberts.python",
+  "links": [
+    {"name": "home", "url":  "/"},
+    {"name": "about", "url":  "/about"},
+    {"name": "python", "url":  "/python"},
+    {"name": "go", "url":  "/go"},
+    {"name": "github", "url":  "https://github.com/robertsben/homepage"}
+  ],
+  "main": {
+    "heading": "The first version of this app runs using python 3. The webserver is implemented from scratch using the socket library, with the ssl library used for https.",
+    "paragraphs": [
+      "Routing uses dicts mapping routes to modules, each route has a module that implements the relevant HTTP verbs.",
+      "Templating works by the route controller specifying a template name and a data file, and matching the Accept header to a template suffix. Templates are hydrated with data using the stdlib string.Template class. Template and data files are cached in memory once read from disk."
+    ]
+  }
+}
