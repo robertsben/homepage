@@ -9,7 +9,7 @@ import (
 )
 
 var MimeExtentionMap = map[string]string{
-	"text/plain":       "text",
+	"text/plain":       "txt",
 	"text/html":        "html",
 	"application/json": "json",
 }

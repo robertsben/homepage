@@ -7,20 +7,20 @@ import (
 )
 
 type Body struct {
-	Heading    string
-	Paragraphs []string
+	Heading    string   `json:"heading"`
+	Paragraphs []string `json:"paragraphs"`
 }
 
 type Link struct {
-	Url  string
-	Name string
+	Url  string `json:"url"`
+	Name string `json:"name"`
 }
 
 type IndexPage struct {
-	Title   string
-	Heading string
-	Main    Body
-	Links   []Link
+	Title   string `json:"title"`
+	Heading string `json:"heading"`
+	Main    Body   `json:"main"`
+	Links   []Link `json:"links"`
 }
 
 func RenderIndex(w http.ResponseWriter, contentType string) {
@@ -33,6 +33,12 @@ func RenderIndex(w http.ResponseWriter, contentType string) {
 	if err != nil {
 		RenderError(w, contentType, ErrorFactory(http.StatusInternalServerError, err.Error()))
 	}
+	if contentType == "application/json" {
+		w.Header().Set("Content-Type", "application/json")
+		resp, _ := json.Marshal(data)
+		w.Write(resp)
+		return
+	}
 	tmpl, err := templating.ReadTemplate("index", contentType)
 	if err != nil {
 		RenderError(w, contentType, ErrorFactory(http.StatusInternalServerError, err.Error()))
@@ -41,4 +47,3 @@ func RenderIndex(w http.ResponseWriter, contentType string) {
 		RenderError(w, contentType, ErrorFactory(http.StatusInternalServerError, err.Error()))
 	}
 }
-

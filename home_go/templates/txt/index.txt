@@ -1,0 +1,15 @@
+{{.Title}}
+{{.Heading}}
+
+Links
+------------
+{{range .Links}}{{.Name}}: {{.Url}}
+{{end}}
+
+Content
+------------
+{{.Main.Heading}}
+
+{{range .Main.Paragraphs}}
+{{.}}
+{{end}}
