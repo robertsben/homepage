@@ -30,7 +30,7 @@ certs, or use `brew install curl` version of curl.
 * ~~Figure out how to return different content-type based on the accept header~~
 * ~~Add templating for plain text~~
 * Add markdown templating?
-* Refactor a bit to allow for more than just GET responses? - rendering temlpates is limiting
+* ~~Refactor a bit to allow for more than just GET responses? - rendering temlpates is limiting~~
 * ~~Just let the json responses be json responses - don't template those~~
 * Write a socket server
 * Parse HTTP response

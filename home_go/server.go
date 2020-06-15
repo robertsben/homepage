@@ -1,10 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"homepage/routes"
-	"homepage/templating"
+	"homepage/controller"
+	"homepage/view"
 	"log"
 	"net/http"
 	"strings"
@@ -26,79 +25,43 @@ func getAcceptOptions(r *http.Request) []string {
 	return []string{"text/html"}
 }
 
-func acceptableContentType(options []string) (string, error) {
+func controllerAllowedContentType(options []string, c controller.Controller) (string, error) {
+	allowedContentTypes := c.AcceptableContentTypes()
 	for _, option := range options {
-		if _, ok := templating.MimeExtentionMap[option]; ok {
+		if _, ok := allowedContentTypes[option]; ok {
 			return option, nil
 		}
 	}
 	return "", fmt.Errorf("no acceptable content types found in %s", options)
 }
 
-func RenderError(w http.ResponseWriter, contentType string, httpError routes.Error) {
-	if contentType == "application/json" {
-		w.Header().Set("Content-Type", "application/json")
-		resp, _ := json.Marshal(httpError)
-		w.WriteHeader(httpError.Code)
-		w.Write(resp)
-		return
-	}
-	tmpl, _ := templating.ReadTemplate("error", contentType)
-	w.WriteHeader(httpError.Code)
-	if _err := tmpl.Execute(w, httpError); _err != nil {
-		http.Error(w, _err.Error(), http.StatusInternalServerError)
-	}
-}
-
-func RenderRoute(w http.ResponseWriter, contentType string, config routes.ResponseConfig) {
-	rawData, err := templating.ReadTemplateData(config.TemplateDataName)
-	if err != nil {
-		RenderError(w, contentType, routes.ErrorFactory(http.StatusInternalServerError, err.Error()))
-	}
-	err = json.Unmarshal(rawData, config.TemplateMarshal)
-	if err != nil {
-		RenderError(w, contentType, routes.ErrorFactory(http.StatusInternalServerError, err.Error()))
-	}
-	if contentType == "application/json" {
-		w.Header().Set("Content-Type", "application/json")
-		resp, _ := json.Marshal(config.TemplateMarshal)
-		w.Write(resp)
-		return
-	}
-	tmpl, err := templating.ReadTemplate(config.TemplateName, contentType)
-	if err != nil {
-		RenderError(w, contentType, routes.ErrorFactory(http.StatusInternalServerError, err.Error()))
-	}
-	if err := tmpl.Execute(w, config.TemplateMarshal); err != nil {
-		RenderError(w, contentType, routes.ErrorFactory(http.StatusInternalServerError, err.Error()))
-	}
-}
-
-func RoutingHandler(responder func(*http.Request) (routes.ResponseConfig, *routes.Error)) func(w http.ResponseWriter, r *http.Request){
+func RoutingHandler(c controller.Controller) func(w http.ResponseWriter, r *http.Request){
 	return func(w http.ResponseWriter, r *http.Request) {
 		contentTypeOptions := getAcceptOptions(r)
-		defaultContentType, err := acceptableContentType(contentTypeOptions)
+		contentType, err := controllerAllowedContentType(contentTypeOptions, c)
 		if err != nil {
-			RenderError(w, "text/html", routes.ErrorFactory(http.StatusNotAcceptable, err.Error()))
+			controller.ErrorResponder(w, view.HTML, controller.ErrorFactory(http.StatusNotAcceptable, err.Error()))
 			return
 		}
-		responseConfig, httpErr := responder(r)
-		if httpErr != nil {
-			RenderError(w, defaultContentType, *httpErr)
+		if r.URL.Path != c.AcceptablePath() {
+			controller.ErrorResponder(w, contentType, controller.ErrorFactory(http.StatusNotFound, "Route not found"))
 			return
 		}
-		if r.URL.Path != responseConfig.Path {
-			RenderError(w, defaultContentType, routes.ErrorFactory(http.StatusNotFound, "Route not found"))
-			return
-		}
-		RenderRoute(w, defaultContentType, responseConfig)
+		c.Respond(w, r, contentType)
 	}
 }
 
 func Serve() {
-	http.HandleFunc("/", RoutingHandler(routes.IndexRouteResponder))
-	http.HandleFunc("/python", RoutingHandler(routes.PythonRouteResponder))
-	http.HandleFunc("/about", RoutingHandler(routes.AboutRouteResponder))
+	controllers := []controller.Controller{
+		controller.IndexController(),
+		controller.AboutController(),
+		controller.PythonController(),
+	}
+
+	for _, c := range controllers {
+		http.HandleFunc(c.AcceptablePath(), RoutingHandler(c))
+	}
+
 	log.Fatal(http.ListenAndServe(":8000", nil))
 }
 

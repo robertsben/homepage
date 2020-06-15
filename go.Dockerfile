@@ -27,8 +27,7 @@ RUN chown -R $APP_USER $APP_HOME
 USER $APP_USER
 
 COPY certs certs
-COPY home_go/templates templates
-COPY home_go/data data
+COPY home_go/static static
 COPY --from=builder $APP_HOME/main .
 
 CMD ["./main"]
