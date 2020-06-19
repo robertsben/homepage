@@ -11,6 +11,9 @@ under the names `homepage.crt` and `homepage.key`.
     docker-compose up --build python_app
     curl -G https://localhost:7001
 
+    docker-compse up --build go_app
+    curl -G https://localhost:7002
+
 @NOTE: that `curl` doesn't like self signed certs by default, you'll need to tell it about your
 certs, or use `brew install curl` version of curl.
 
@@ -32,6 +35,7 @@ certs, or use `brew install curl` version of curl.
 * Add markdown templating?
 * ~~Refactor a bit to allow for more than just GET responses? - rendering temlpates is limiting~~
 * ~~Just let the json responses be json responses - don't template those~~
+* ~~Make it HTTPS~~
 * Write a socket server
 * Parse HTTP response
 * ~~Build router~~

@@ -62,7 +62,7 @@ func Serve() {
 		http.HandleFunc(c.AcceptablePath(), RoutingHandler(c))
 	}
 
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	log.Fatal(http.ListenAndServeTLS(":8000", "certs/homepage.crt", "certs/homepage.key", nil))
 }
 
 
